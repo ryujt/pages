@@ -56,14 +56,19 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION === 'true',
       contextIsolation: process.env.ELECTRON_NODE_INTEGRATION !== 'true',
+      preload: path.join(__dirname, 'preload.js')
     },
   })
 
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(process.env.VITE_DEV_SERVER_URL)
   } else {
+    // 프로덕션 모드에서는 dist 폴더 내의 index.html을 로드합니다
     win.loadFile(path.join(__dirname, '../dist/index.html'))
   }
+
+  // 개발자 도구 열기 (문제 해결 시 유용)
+  win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
@@ -77,6 +82,13 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
+// 디버깅을 위한 코드 추가
+const indexPath = path.join(__dirname, '../dist/index.html')
+console.log('Index file path:', indexPath)
+console.log('Index file exists:', require('fs').existsSync(indexPath))
+console.log('App path:', app.getAppPath())
+console.log('__dirname:', __dirname)
 ```
 
 ## 5. Vite 설정 파일 수정
@@ -87,14 +99,28 @@ app.on('window-all-closed', function () {
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import electron from 'vite-plugin-electron'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
     vue(),
     electron({
       entry: 'electron/main.js',
+      vite: {
+        build: {
+          outDir: 'dist-electron',
+        },
+      },
     }),
   ],
+  build: {
+    outDir: 'dist',
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
 })
 ```
 
@@ -106,7 +132,7 @@ export default defineConfig({
 {
   ...
   "type": "commonjs",
-  "main": "electron/main.js",
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -114,6 +140,20 @@ export default defineConfig({
     "electron:dev": "vite build && electron .",
     "electron:build": "vite build && electron-builder",
     "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "com.example.electron-vue-vite2",
+    "productName": "Electron Vue Vite App",
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "directories": {
+      "output": "release/${version}"
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    }
   },
   ...
 }
@@ -135,7 +175,7 @@ npm run electron:dev
 npm run electron:build
 ```
 
-이 명령은 `dist_electron` 폴더에 배포 가능한 애플리케이션을 생성합니다.
+이 명령은 `release` 폴더에 배포 가능한 애플리케이션을 생성합니다.
 
 ## 주의사항
 
