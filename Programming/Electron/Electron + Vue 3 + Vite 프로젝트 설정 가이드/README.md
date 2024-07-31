@@ -32,7 +32,8 @@ npm install electron electron-builder vite-plugin-electron -D
 ```
 electron-vue-vite/
 ├── electron/
-│   └── main.js
+│   ├── main.js
+│   └── preload.js
 ├── src/
 │   ├── App.vue
 │   └── main.js
@@ -91,7 +92,32 @@ console.log('App path:', app.getAppPath())
 console.log('__dirname:', __dirname)
 ```
 
-## 5. Vite 설정 파일 수정
+## 5. preload.js 파일 생성
+
+`electron/preload.js` 파일을 생성하고 다음 내용을 추가합니다:
+
+```javascript
+const { contextBridge, ipcRenderer } = require('electron')
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  sendMessage: (message) => ipcRenderer.send('message', message),
+  onReceiveMessage: (callback) => ipcRenderer.on('message', (event, message) => callback(message)),
+  versions: process.versions
+})
+
+window.addEventListener('DOMContentLoaded', () => {
+  const replaceText = (selector, text) => {
+    const element = document.getElementById(selector)
+    if (element) element.innerText = text
+  }
+
+  for (const dependency of ['chrome', 'node', 'electron']) {
+    replaceText(`${dependency}-version`, process.versions[dependency])
+  }
+})
+```
+
+## 6. Vite 설정 파일 수정
 
 `vite.config.js` 파일을 다음과 같이 수정합니다:
 
@@ -124,13 +150,14 @@ export default defineConfig({
 })
 ```
 
-## 6. package.json 수정
+## 7. package.json 수정
 
 `package.json` 파일을 다음과 같이 수정합니다:
 
 ```json
 {
-  ...
+  "name": "electron-vue-vite",
+  "version": "1.0.0",
   "type": "commonjs",
   "main": "dist-electron/main.js",
   "scripts": {
@@ -142,7 +169,7 @@ export default defineConfig({
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
-    "appId": "com.example.electron-vue-vite2",
+    "appId": "com.example.electron-vue-vite",
     "productName": "Electron Vue Vite App",
     "files": [
       "dist/**/*",
@@ -159,7 +186,7 @@ export default defineConfig({
 }
 ```
 
-## 7. 애플리케이션 실행
+## 8. 애플리케이션 실행
 
 개발 모드에서 애플리케이션을 실행하려면:
 
@@ -167,7 +194,7 @@ export default defineConfig({
 npm run electron:dev
 ```
 
-## 8. 빌드 및 배포
+## 9. 빌드 및 배포
 
 프로덕션용 빌드를 생성하려면:
 
