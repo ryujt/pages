@@ -104,9 +104,7 @@ export default defineConfig({
 
 ```json
 {
-  "name": "electron-vue-vite",
-  "private": true,
-  "version": "0.0.0",
+  ...
   "type": "commonjs",
   "main": "electron/main.js",
   "scripts": {
@@ -117,32 +115,11 @@ export default defineConfig({
     "electron:build": "vite build && electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
-  "dependencies": {
-    "vue": "^3.3.4"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "electron": "^24.3.0",
-    "electron-builder": "^24.4.0",
-    "vite": "^4.3.9",
-    "vite-plugin-electron": "^0.11.2"
-  }
+  ...
 }
 ```
 
-## 7. Vue 컴포넌트 수정
-
-`src/App.vue` 파일을 수정하여 간단한 "Hello World" 메시지를 표시합니다:
-
-```vue
-<template>
-  <div>
-    Hello World!
-  </div>
-</template>
-```
-
-## 8. 애플리케이션 실행
+## 7. 애플리케이션 실행
 
 개발 모드에서 애플리케이션을 실행하려면:
 
@@ -150,7 +127,7 @@ export default defineConfig({
 npm run electron:dev
 ```
 
-## 9. 빌드 및 배포
+## 8. 빌드 및 배포
 
 프로덕션용 빌드를 생성하려면:
 
