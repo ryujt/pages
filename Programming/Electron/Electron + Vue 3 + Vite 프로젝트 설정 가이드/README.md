@@ -1,6 +1,6 @@
 # Electron + Vue 3 + Vite 프로젝트 설정 가이드
 
-이 가이드는 Electron, Vue 3, 그리고 Vite를 사용하여 기본적인 "Hello World" 애플리케이션을 만드는 과정을 설명합니다.
+이 가이드는 Electron, Vue 3, 그리고 Vite를 JavaScript로 사용하여 기본적인 "Hello World" 애플리케이션을 만드는 과정을 설명합니다.
 
 ## 필수 조건
 
@@ -22,7 +22,7 @@ npm install
 프로젝트에 Electron과 관련 개발 도구를 추가합니다:
 
 ```bash
-npm install electron electron-builder vite-plugin-electron -D
+npm install electron electron-builder vite-plugin-electron vite-plugin-electron-renderer -D
 ```
 
 ## 3. 프로젝트 구조 설정
@@ -158,15 +158,11 @@ export default defineConfig({
 {
   "name": "electron-vue-vite",
   "version": "1.0.0",
-  "type": "commonjs",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "electron:dev": "vite build && electron .",
-    "electron:build": "vite build && electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "build": "vite build && electron-builder",
+    "preview": "vite preview"
   },
   "build": {
     "appId": "com.example.electron-vue-vite",
@@ -191,7 +187,7 @@ export default defineConfig({
 개발 모드에서 애플리케이션을 실행하려면:
 
 ```bash
-npm run electron:dev
+npm run dev
 ```
 
 ## 9. 빌드 및 배포
@@ -199,16 +195,16 @@ npm run electron:dev
 프로덕션용 빌드를 생성하려면:
 
 ```bash
-npm run electron:build
+npm run build
 ```
 
-이 명령은 `release` 폴더에 배포 가능한 애플리케이션을 생성합니다.
+이 명령은 `dist` 폴더에 Vue 앱을, `dist-electron` 폴더에 Electron 관련 파일들을 생성합니다.
 
 ## 주의사항
 
 - Node.js와 npm 버전이 프로젝트 요구사항과 일치하는지 확인하세요.
 - Electron 버전과 다른 의존성 버전이 호환되는지 확인하세요.
-- 보안을 위해 프로덕션 환경에서는 `nodeIntegration: false`와 `contextIsolation: true`를 사용하는 것이 좋습니다.
 - 문제가 발생하면 의존성을 재설치하거나 (`npm ci`), Node.js 캐시를 정리 (`npm cache clean --force`)해 보세요.
+- `vite-plugin-electron`과 `vite-plugin-electron-renderer`를 사용하여 Electron의 메인 프로세스와 프리로드 스크립트를 올바르게 빌드하고 관리합니다.
 
-이 가이드를 따라 설정하면 기본적인 Electron + Vue 3 + Vite 프로젝트가 구성됩니다. 추가 기능이나 최적화가 필요한 경우 각 도구의 공식 문서를 참조하세요.
+이 가이드를 따라 설정하면 JavaScript 기반의 Electron + Vue 3 + Vite 프로젝트가 정상적으로 작동할 것입니다. 추가 기능이나 최적화가 필요한 경우 각 도구의 공식 문서를 참조하세요.
