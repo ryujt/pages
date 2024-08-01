@@ -57,18 +57,16 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION === 'true',
       contextIsolation: process.env.ELECTRON_NODE_INTEGRATION !== 'true',
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js')  // 이 경로가 올바른지 확인하세요
     },
   })
 
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(process.env.VITE_DEV_SERVER_URL)
   } else {
-    // 프로덕션 모드에서는 dist 폴더 내의 index.html을 로드합니다
     win.loadFile(path.join(__dirname, '../dist/index.html'))
   }
 
-  // 개발자 도구 열기 (문제 해결 시 유용)
   win.webContents.openDevTools()
 }
 
@@ -84,12 +82,10 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
 
-// 디버깅을 위한 코드 추가
-const indexPath = path.join(__dirname, '../dist/index.html')
-console.log('Index file path:', indexPath)
-console.log('Index file exists:', require('fs').existsSync(indexPath))
-console.log('App path:', app.getAppPath())
+// 디버깅을 위한 코드
+console.log('Preload path:', path.join(__dirname, 'preload.js'))
 console.log('__dirname:', __dirname)
+console.log('App path:', app.getAppPath())
 ```
 
 ## 5. preload.js 파일 생성
@@ -138,6 +134,12 @@ export default defineConfig({
         },
       },
     }),
+    electron({
+      entry: 'electron/preload.js',
+      onstart(options) {
+        options.startup()
+      },
+    }),
   ],
   build: {
     outDir: 'dist',
@@ -162,7 +164,8 @@ export default defineConfig({
   "scripts": {
     "dev": "vite",
     "build": "vite build && electron-builder",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron:dev": "vite build && vite build --config vite.config.js && electron ."
   },
   "build": {
     "appId": "com.example.electron-vue-vite",
@@ -187,7 +190,7 @@ export default defineConfig({
 개발 모드에서 애플리케이션을 실행하려면:
 
 ```bash
-npm run dev
+npm run electron:dev
 ```
 
 ## 9. 빌드 및 배포
