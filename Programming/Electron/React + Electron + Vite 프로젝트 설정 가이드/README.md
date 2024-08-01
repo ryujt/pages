@@ -196,7 +196,7 @@ export default defineConfig({
 `src/App.jsx` 파일을 다음과 같이 수정하여 Electron 버전 정보를 표시합니다:
 
 ```jsx
-import React from 'react'
+import './App.css'
 
 function App() {
   return (
