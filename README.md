@@ -36,5 +36,4 @@
 * Electron
   * [Electron + Vue 3 + Vite 프로젝트 설정 가이드](./Programming/Electron/Electron%20%2B%20Vue%203%20%2B%20Vite%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%84%A4%EC%A0%95%20%EA%B0%80%EC%9D%B4%EB%93%9C/README.md)
   * [Electron과 C++ 연동 프로젝트 생성 튜토리얼](./Programming/Electron/Electron%EA%B3%BC%20C%2B%2B%20%EC%97%B0%EB%8F%99%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%83%9D%EC%84%B1%20%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC/README.md)
-
-## etc
+  * [React + Electron + Vite 프로젝트 설정 가이드](./Programming/Electron/React%20%2B%20Electron%20%2B%20Vite%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%84%A4%EC%A0%95%20%EA%B0%80%EC%9D%B4%EB%93%9C/README.md)
