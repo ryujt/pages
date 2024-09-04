@@ -73,6 +73,16 @@ http://127.0.0.1:8080/question/83
 http://127.0.0.1:8080/question/82
 ```
 
+```
+아래 메소드들이 다른 코드에 영향을 주는 모든 프로세스를 찾아서 시퀀스 다이어그램을 그려줘.
+resource
+SendProfileData
+SendUserSession
+rummaps.G_PcodeAccessKey.Add
+g_meterSessionMap.AddMeterSessionID
+http://127.0.0.1:8080/question/89
+```
+
 ### 프로젝트 전체 코드를 고려하여 기능 추가하기
 
 인공지능과 페어 프로그래밍 하듯이 프로젝트를 진행하는 예제입니다.
