@@ -1,6 +1,6 @@
-# Electron + Vue 3 + Vite 프로젝트 설정 가이드
+# React + Electron + Vite 프로젝트 설정 가이드 (수정판)
 
-이 가이드는 Electron, Vue 3, 그리고 Vite를 JavaScript로 사용하여 기본적인 "Hello World" 애플리케이션을 만드는 과정을 설명합니다.
+이 가이드는 Electron, React, 그리고 Vite를 JavaScript로 사용하여 기본적인 "Hello World" 애플리케이션을 만드는 과정을 설명합니다. 이전 버전에서 발생한 문제점들을 해결한 수정된 버전입니다.
 
 ## 필수 조건
 
@@ -9,11 +9,11 @@
 
 ## 1. 프로젝트 생성
 
-먼저, Vite를 사용하여 새 Vue 프로젝트를 생성합니다:
+먼저, Vite를 사용하여 새 React 프로젝트를 생성합니다:
 
 ```bash
-npm create vite@latest electron-vue-vite -- --template vue
-cd electron-vue-vite
+npm create vite@latest electron-react-vite -- --template react
+cd electron-react-vite
 npm install
 ```
 
@@ -30,13 +30,13 @@ npm install electron electron-builder vite-plugin-electron vite-plugin-electron-
 다음과 같은 프로젝트 구조를 만듭니다:
 
 ```
-electron-vue-vite/
+electron-react-vite/
 ├── electron/
 │   ├── main.js
 │   └── preload.js
 ├── src/
-│   ├── App.vue
-│   └── main.js
+│   ├── App.jsx
+│   └── main.jsx
 ├── index.html
 ├── package.json
 └── vite.config.js
@@ -57,7 +57,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION === 'true',
       contextIsolation: process.env.ELECTRON_NODE_INTEGRATION !== 'true',
-      preload: path.join(__dirname, 'preload.js')  // 이 경로가 올바른지 확인하세요
+      preload: path.join(__dirname, 'preload.js')
     },
   })
 
@@ -67,25 +67,28 @@ function createWindow() {
     win.loadFile(path.join(__dirname, '../dist/index.html'))
   }
 
+  // 개발자 도구를 열어 문제를 디버깅합니다.
   win.webContents.openDevTools()
+
+  // preload.js 파일의 경로와 존재 여부를 콘솔에 출력합니다.
+  const preloadPath = path.join(__dirname, 'preload.js')
+  console.log('Preload path:', preloadPath)
+  console.log('Preload file exists:', require('fs').existsSync(preloadPath))
 }
 
-app.whenReady().then(() => {
-  createWindow()
+app.whenReady().then(createWindow)
 
-  app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
 })
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow()
+  }
 })
-
-// 디버깅을 위한 코드
-console.log('Preload path:', path.join(__dirname, 'preload.js'))
-console.log('__dirname:', __dirname)
-console.log('App path:', app.getAppPath())
 ```
 
 ## 5. preload.js 파일 생성
@@ -119,27 +122,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
 ```javascript
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import react from '@vitejs/plugin-react'
 import electron from 'vite-plugin-electron'
+import renderer from 'vite-plugin-electron-renderer'
 import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
-    vue(),
-    electron({
-      entry: 'electron/main.js',
-      vite: {
-        build: {
-          outDir: 'dist-electron',
+    react(),
+    electron([
+      {
+        // Main-Process entry file of the Electron App.
+        entry: 'electron/main.js',
+      },
+      {
+        entry: 'electron/preload.js',
+        onstart(options) {
+          // Notify the Renderer-Process to reload the page when the Preload-Scripts build is complete, 
+          // instead of restarting the entire Electron App.
+          options.reload()
         },
       },
-    }),
-    electron({
-      entry: 'electron/preload.js',
-      onstart(options) {
-        options.startup()
-      },
-    }),
+    ]),
+    renderer(),
   ],
   build: {
     outDir: 'dist',
@@ -158,18 +163,19 @@ export default defineConfig({
 
 ```json
 {
-  "name": "electron-vue-vite",
+  "name": "electron-react-vite",
   "version": "1.0.0",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build && electron-builder",
     "preview": "vite preview",
-    "electron:dev": "vite build && vite build --config vite.config.js && electron ."
+    "electron:dev": "vite -c vite.config.js --mode development",
+    "electron:build": "vite build && electron-builder"
   },
   "build": {
-    "appId": "com.example.electron-vue-vite",
-    "productName": "Electron Vue Vite App",
+    "appId": "com.example.electron-react-vite",
+    "productName": "Electron React Vite App",
     "files": [
       "dist/**/*",
       "dist-electron/**/*"
@@ -185,7 +191,28 @@ export default defineConfig({
 }
 ```
 
-## 8. 애플리케이션 실행
+## 8. React 컴포넌트 수정
+
+`src/App.jsx` 파일을 다음과 같이 수정하여 Electron 버전 정보를 표시합니다:
+
+```jsx
+import './App.css'
+
+function App() {
+  return (
+    <div>
+      <h1>Hello Electron + React + Vite!</h1>
+      <p>Chrome version: <span id="chrome-version"></span></p>
+      <p>Node version: <span id="node-version"></span></p>
+      <p>Electron version: <span id="electron-version"></span></p>
+    </div>
+  )
+}
+
+export default App
+```
+
+## 9. 애플리케이션 실행
 
 개발 모드에서 애플리케이션을 실행하려면:
 
@@ -193,15 +220,15 @@ export default defineConfig({
 npm run electron:dev
 ```
 
-## 9. 빌드 및 배포
+## 10. 빌드 및 배포
 
 프로덕션용 빌드를 생성하려면:
 
 ```bash
-npm run build
+npm run electron:build
 ```
 
-이 명령은 `dist` 폴더에 Vue 앱을, `dist-electron` 폴더에 Electron 관련 파일들을 생성합니다.
+이 명령은 `dist` 폴더에 React 앱을, `dist-electron` 폴더에 Electron 관련 파일들을 생성합니다.
 
 ## 주의사항
 
@@ -209,5 +236,6 @@ npm run build
 - Electron 버전과 다른 의존성 버전이 호환되는지 확인하세요.
 - 문제가 발생하면 의존성을 재설치하거나 (`npm ci`), Node.js 캐시를 정리 (`npm cache clean --force`)해 보세요.
 - `vite-plugin-electron`과 `vite-plugin-electron-renderer`를 사용하여 Electron의 메인 프로세스와 프리로드 스크립트를 올바르게 빌드하고 관리합니다.
+- 개발 중 문제가 발생하면 콘솔 로그를 확인하여 `preload.js` 파일의 경로와 존재 여부를 확인하세요.
 
-이 가이드를 따라 설정하면 JavaScript 기반의 Electron + Vue 3 + Vite 프로젝트가 정상적으로 작동할 것입니다. 추가 기능이나 최적화가 필요한 경우 각 도구의 공식 문서를 참조하세요.
+이 가이드를 따라 설정하면 JavaScript 기반의 Electron + React + Vite 프로젝트가 정상적으로 작동할 것입니다. 추가 기능이나 최적화가 필요한 경우 각 도구의 공식 문서를 참조하세요.
