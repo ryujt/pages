@@ -35,7 +35,7 @@ Windows x86 기반 시스템에서 ARM64 아키텍처용 우분투 이미지를 
 4. **멀티 플랫폼 이미지 빌드**
 
      ```bash
-     docker buildx build --platform linux/arm64 -f ubuntu-22.04-dotnet-8.0-arm64 -t dotnet-ubuntu-arm64 .
+     docker buildx build --platform linux/arm64 -f ubuntu-22.04-dotnet-8.0-arm64 -t dotnet-ubuntu-arm64 --load .
      ```
 
      위 명령어에서 `<DockerHub_사용자명>`을 본인의 Docker Hub 사용자명으로 대체합니다.
@@ -45,7 +45,8 @@ Windows x86 기반 시스템에서 ARM64 아키텍처용 우분투 이미지를 
    - **컨테이너 실행**: 빌드한 이미지를 기반으로 ARM64 컨테이너를 실행합니다.
 
      ```bash
-     docker run --rm --platform linux/arm64 dotnet-ubuntu-arm64
+     docker run -d -p 8080:8080 -v D:\:/root/ryu/ --name dotnet-ubuntu-arm64-container dotnet-ubuntu-arm64
+     docker exec -it dotnet-ubuntu-arm64-container /bin/zsh
      ```
 
      이렇게 하면 Windows x86 시스템에서 ARM64 아키텍처용 우분투 컨테이너를 실행할 수 있습니다.
