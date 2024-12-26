@@ -3,6 +3,12 @@
 
 ## Software Engineering
 
+* [객체 지향 프로그래밍의 원칙](./Software%20Engineering/%EA%B0%9D%EC%B2%B4%20%EC%A7%80%ED%96%A5%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%EC%9D%98%20%EC%9B%90%EC%B9%99/README.md)
+* Design pattern
+  * [Design pattern - Decorator pattern](./Software%20Engineering/Design%20pattern/Design%20pattern%20-%20Decorator%20pattern/README.md)
+  * [Design pattern - Strategy pattern](./Software%20Engineering/Design%20pattern/Design%20pattern%20-%20Strategy%20pattern/README.md)
+  * [Design pattern - State pattern](./Software%20Engineering/Design%20pattern/Design%20pattern%20-%20State%20pattern/README.md)
+  * [Design pattern - Command pattern](./Software%20Engineering/Design%20pattern/Design%20pattern%20-%20Command%20pattern/README.md)
 * [MVVM 쉽고 확실하게 이해하기](./Software%20Engineering/MVVM%20%EC%89%BD%EA%B3%A0%20%ED%99%95%EC%8B%A4%ED%95%98%EA%B2%8C%20%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0/README.md)
 * [클래스 상속과 인터페이스 구현의 차이](./Software%20Engineering/%ED%81%B4%EB%9E%98%EC%8A%A4%20%EC%83%81%EC%86%8D%EA%B3%BC%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4%20%EA%B5%AC%ED%98%84%EC%9D%98%20%EC%B0%A8%EC%9D%B4/README.md)
 
@@ -25,6 +31,7 @@
   * [01. flex와 bison 소개](./Projects/Tiny%20Calc/01.%20flex%EC%99%80%20bison%20%EC%86%8C%EA%B0%9C/README.md)
   * [03. 스캐너 직접 구현하기](./Projects/Tiny%20Calc/03.%20%EC%8A%A4%EC%BA%90%EB%84%88%20%EC%A7%81%EC%A0%91%20%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/README.md)
   * [02. flex와 bison 사용방법](./Projects/Tiny%20Calc/02.%20flex%EC%99%80%20bison%20%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95/README.md)
+* [berryful - 뷰티 전문 틱톡 서비스 개발](./Projects/berryful%20-%20%EB%B7%B0%ED%8B%B0%20%EC%A0%84%EB%AC%B8%20%ED%8B%B1%ED%86%A1%20%EC%84%9C%EB%B9%84%EC%8A%A4%20%EA%B0%9C%EB%B0%9C/README.md)
 * 화상회의
   * [04. 동영상 압축](./Projects/%ED%99%94%EC%83%81%ED%9A%8C%EC%9D%98/04.%20%EB%8F%99%EC%98%81%EC%83%81%20%EC%95%95%EC%B6%95/README.md)
   * [02. 간단한 음성 채팅 프로젝트](./Projects/%ED%99%94%EC%83%81%ED%9A%8C%EC%9D%98/02.%20%EA%B0%84%EB%8B%A8%ED%95%9C%20%EC%9D%8C%EC%84%B1%20%EC%B1%84%ED%8C%85%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/README.md)
@@ -46,4 +53,5 @@
 
 ## etc
 
+* [Windows에서 arm64 도커 이미지 빌드 및 실행](./etc/Windows%EC%97%90%EC%84%9C%20arm64%20%EB%8F%84%EC%BB%A4%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EB%B9%8C%EB%93%9C%20%EB%B0%8F%20%EC%8B%A4%ED%96%89/README.md)
 * [EC2에 node 서버 설치하기](./etc/EC2%EC%97%90%20node%20%EC%84%9C%EB%B2%84%20%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0/README.md)
