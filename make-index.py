@@ -2,9 +2,10 @@ import os
 from urllib.parse import quote
 
 folder_order = ["Software Engineering", "인공지능", "Projects", "Programming", "etc"]
+ignored_folders = ["resource"]  # Add resource folder to ignored list
 
 def get_sorted_dirs(path):
-    dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+    dirs = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d)) and d not in ignored_folders]
     return sorted(dirs, key=lambda x: folder_order.index(x) if x in folder_order else -1)
 
 def generate_index(path, indent=0):
@@ -18,7 +19,7 @@ def generate_index(path, indent=0):
         if dir == "etc":
             continue
         
-        subdirs = [d for d in os.listdir(dir_path) if os.path.isdir(os.path.join(dir_path, d))]
+        subdirs = [d for d in os.listdir(dir_path) if os.path.isdir(os.path.join(dir_path, d)) and d not in ignored_folders]
         
         if not subdirs:
             readme_path = os.path.join(dir_path, "README.md")

@@ -54,4 +54,5 @@
 ## etc
 
 * [Windows에서 arm64 도커 이미지 빌드 및 실행](./etc/Windows%EC%97%90%EC%84%9C%20arm64%20%EB%8F%84%EC%BB%A4%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EB%B9%8C%EB%93%9C%20%EB%B0%8F%20%EC%8B%A4%ED%96%89/README.md)
+* [동영상강의 목록](./etc/%EB%8F%99%EC%98%81%EC%83%81%EA%B0%95%EC%9D%98%20%EB%AA%A9%EB%A1%9D/README.md)
 * [EC2에 node 서버 설치하기](./etc/EC2%EC%97%90%20node%20%EC%84%9C%EB%B2%84%20%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0/README.md)
