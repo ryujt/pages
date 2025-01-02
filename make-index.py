@@ -1,5 +1,6 @@
 import os
 import re
+from urllib.parse import quote
 
 folder_order = ["Software Engineering", "인공지능", "Projects", "Programming", "etc"]
 ignored_folders = ["resource"]
@@ -8,13 +9,14 @@ def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower() for text in re.split('([0-9]+)', s)]
 
 def encode_path_with_spaces(rel_path):
-    # UTF-8로 인코딩한 후 %로 시작하는 시퀀스로 변환
     parts = rel_path.split(os.sep)
     encoded_parts = []
+    
     for part in parts:
-        # 각 문자를 UTF-8로 인코딩하고 퍼센트 인코딩으로 변환
-        encoded = ''.join(['%' + '{:02X}'.format(b) for b in part.encode('utf-8')])
+        # quote 함수를 사용하여 UTF-8 형식으로 일관되게 인코딩
+        encoded = quote(part, encoding='utf-8', safe='')
         encoded_parts.append(encoded)
+    
     return '/'.join(encoded_parts)
 
 def get_subdirectories(path):
